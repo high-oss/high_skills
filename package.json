@@ -1,0 +1,42 @@
+{
+  "name": "@high-oss/high-skill",
+  "version": "1.0.0",
+  "description": "HIGH agent skill for Claude Code, Codex, and Agent Skills-compatible AI agents — NSE/BSE equity and F&O trading via the HIGH Open API",
+  "keywords": [
+    "high",
+    "high-openapi",
+    "agent-skills",
+    "trading",
+    "nse",
+    "bse",
+    "broker",
+    "claude-code",
+    "codex",
+    "skill"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/high-oss/high_skills.git"
+  },
+  "homepage": "https://github.com/high-oss/high_skills#readme",
+  "bugs": {
+    "url": "https://github.com/high-oss/high_skills/issues"
+  },
+  "bin": {
+    "high-skill": "./bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "config.json.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "test": "node bin/install.js --help"
+  }
+}

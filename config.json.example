@@ -1,0 +1,14 @@
+{
+  "environment": "sandbox",
+  "client_id": "",
+  "default_exchange_segment": "NSE",
+  "default_product_type": "DELIVERY",
+  "default_flavor": "REGULAR",
+  "default_order_type": "LIMIT",
+  "risk_warnings": true,
+  "max_order_value": 50000,
+  "max_order_quantity": 1000,
+  "allow_market_orders": false,
+  "allow_amo": false,
+  "frequently_traded": ["RELIANCE-EQ", "TCS-EQ", "INFY-EQ", "HDFCBANK-EQ", "SBIN-EQ"]
+}
