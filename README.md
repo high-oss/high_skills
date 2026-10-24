@@ -66,8 +66,8 @@ skills/
     │
     ├── references/                       # Deep-dive docs loaded on demand
     │   ├── orders.md                     # All four flavors: REGULAR, BO, CO, GTT
-    │   ├── portfolio.md                  # Positions, holdings, conversion, exits
-    │   ├── market-data.md                # Quotes, OHLC, depth, historical candles
+    │   ├── portfolio.md                  # Positions, holdings, conversion, stop-loss, target, exits
+    │   ├── market-data.md                # Quotes, OHLC, depth, historical + intraday candles
     │   ├── option-chain.md               # Option chain and expiries
     │   ├── instruments.md                # Instrument master, the three identifier forms
     │   ├── funds.md                      # Funds, charges, basket margin
@@ -94,6 +94,7 @@ skills/
         ├── fetch_option_chain.py         # Chain with ATM region and PCR
         ├── iron_condor.py                # Four legs: build, margin as a basket, place
         ├── portfolio_summary.py          # Holdings + positions + funds; guarded exit-all
+        ├── position_stoploss_target.py   # Stop-loss + target on a position; intraday candles
         ├── margin_check.py               # Affordability before placing
         ├── historical_data_analysis.py   # Candles, moving averages, statistics
         └── live_feed_setup.py            # Live quotes, depth and index ticks

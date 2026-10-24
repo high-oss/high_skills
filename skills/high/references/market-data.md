@@ -1,6 +1,6 @@
 # Market data
 
-Quotes, OHLC, depth, historical candles, and market status.
+Quotes, OHLC, depth, historical and intraday candles, and market status.
 
 | Task | Call | HTTP |
 |---|---|---|
@@ -8,6 +8,7 @@ Quotes, OHLC, depth, historical candles, and market status.
 | OHLC | `high.scrips.ohlc(body)` | `POST /scrips/ohlc` |
 | Market depth | `high.scrips.depth(symbol)` | `GET /scrips/{symbol}/depth` |
 | Historical candles | `high.scrips.historical(body)` | `POST /scrips/historical` |
+| Intraday candles | `high.scrips.intraday(body)` | `POST /scrips/intraday` |
 | Futures on a symbol | `high.scrips.future_data(symbol)` | `GET /scrips/{symbol}/future-data` |
 | Market status | `high.market.status()` | `GET /market/status` |
 
@@ -98,7 +99,7 @@ candles = high.scrips.historical({
 
 | Field | Notes |
 |---|---|
-| `tradingSymbol` | From the instrument list |
+| `tradingSymbol` | From the instrument list. Or send `exchangeSegment` + `scripCode` instead |
 | `interval` | See the table below |
 | `fromTime` | Unix epoch **seconds**, not milliseconds |
 | `toTime` | Unix epoch seconds. Candles opening after it are excluded |
@@ -120,6 +121,22 @@ translation the other intervals get, and may come back empty.** Build them
 from `1M` candles instead — aggregate three, six or twelve monthly bars
 yourself. This is a known sharp edge, not a transient failure; do not retry
 into it.
+
+### Intraday candles
+
+The most recent trading session only, so it works over a weekend or holiday
+without computing a range. No `fromTime`/`toTime`.
+
+```python
+today = high.scrips.intraday({
+    "tradingSymbol": "RELIANCE-EQ",   # or exchangeSegment + scripCode
+    "interval": "5m",
+})
+```
+
+`interval` is one of `1m 2m 3m 4m 5m 10m 15m 30m 45m 1h 2h 3h 4h`. Daily and
+longer intervals belong to `historical`. The response has the same columnar
+shape as `historical`.
 
 ### Epoch seconds
 

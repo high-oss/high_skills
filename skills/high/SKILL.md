@@ -70,7 +70,7 @@ every call.
 7. Never place a live order outside market hours unless the user explicitly
    asked for an after-market order (`isAMO=True`). Check `market.status()`.
 8. Never hardcode credentials. Environment variables only.
-9. Confirm before `orders.modify`, `orders.cancel`, `portfolio.exit_position`,
+9. Confirm before `orders.modify`, `orders.cancel`, `portfolio.exit_position`, `portfolio.set_stoploss`, `portfolio.set_target`,
    and especially `portfolio.exit_all_positions` or any multi-leg execution.
 10. Default to `sandbox`. Switch to `production` only when the user says so,
     and pass `environment=` explicitly — an explicit value suppresses a stray
@@ -97,10 +97,12 @@ the most common failure, and the feed fails silently rather than erroring.
 | Surface | Identifier | Example |
 |---|---|---|
 | Orders | `tradingSymbol` **or** `exchangeSegment` + `scripCode` | `"RELIANCE-EQ"` or `"NSE"` + `"2885"` |
-| Quotes, OHLC, depth, historical | `tradingSymbol` | `"RELIANCE-EQ"` |
+| Historical, intraday candles | `tradingSymbol` **or** `exchangeSegment` + `scripCode` | `"RELIANCE-EQ"` or `"NSE"` + `"2885"` |
+| Position stop-loss, target | `tradingSymbol` **or** `exchangeSegment` + `scripCode` | `"RELIANCE-EQ"` or `"NSE"` + `"2885"` |
+| Quotes, OHLC, depth | `tradingSymbol` | `"RELIANCE-EQ"` |
 | Datafeed | `scrip_key`, i.e. `EXCHANGE@scripCode` | `"NSE@2885"` |
 
-An order request must supply **exactly one** of the two accepted paths: the
+An order, historical, intraday, stop-loss or target request must supply **exactly one** of the two accepted paths: the
 trading symbol, or the segment-and-code pair. The API rejects a request that
 supplies neither.
 
@@ -186,12 +188,15 @@ print(verdict.preview)             # show this, then ask for confirmation
 | Holdings | `high.portfolio.holdings()` |
 | Funds | `high.portfolio.funds()` |
 | Convert position | `high.portfolio.convert_position(body)` |
+| Set a position stop-loss | `high.portfolio.set_stoploss(body)` |
+| Set a position target | `high.portfolio.set_target(body)` |
 | Exit one position | `high.portfolio.exit_position(body)` |
 | Exit every position | `high.portfolio.exit_all_positions()` |
 | Quotes | `high.scrips.quotes({"symbols": [...]})` |
 | OHLC | `high.scrips.ohlc({"symbols": [...]})` |
 | Market depth | `high.scrips.depth(symbol)` |
 | Historical candles | `high.scrips.historical(body)` |
+| Intraday candles (last session) | `high.scrips.intraday(body)` |
 | Option chain | `high.scrips.option_chain(body)` |
 | Expiries | `high.scrips.expiries(symbol, type)` |
 | Futures for a symbol | `high.scrips.future_data(symbol)` |

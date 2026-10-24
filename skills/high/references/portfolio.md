@@ -1,6 +1,6 @@
 # Portfolio
 
-Positions, holdings, funds, product conversion, and exits.
+Positions, holdings, funds, product conversion, stop-loss and target exits, and square-offs.
 
 | Task | Call | HTTP |
 |---|---|---|
@@ -8,10 +8,12 @@ Positions, holdings, funds, product conversion, and exits.
 | Holdings | `high.portfolio.holdings()` | `GET /portfolio/holdings` |
 | Funds | `high.portfolio.funds()` | `GET /portfolio/funds` |
 | Convert a position | `high.portfolio.convert_position(body)` | `PATCH /portfolio/positions/convert` |
+| Set a stop-loss | `high.portfolio.set_stoploss(body)` | `PATCH /portfolio/positions/stoploss` |
+| Set a target | `high.portfolio.set_target(body)` | `PATCH /portfolio/positions/target` |
 | Exit one position | `high.portfolio.exit_position(body)` | `DELETE /portfolio/positions/exit` |
 | Exit every position | `high.portfolio.exit_all_positions()` | `DELETE /portfolio/positions/exit/all` |
 
-Reads need no static IP. The three write paths do.
+Reads need no static IP. The five write paths do.
 
 ## Positions vs holdings
 
@@ -77,6 +79,45 @@ Converting to `DELIVERY` requires the full cash. Converting the other way
 frees margin but exposes the position to the intraday square-off.
 
 Confirm before converting — it changes the account's overnight risk.
+
+## Stop-loss and target on a position
+
+Places an exit order against an open position, or amends the one already
+working. Quantity is read from the live position, never from the caller.
+
+```python
+stop = high.portfolio.set_stoploss({
+    "tradingSymbol": "RELIANCE-EQ",
+    # or: "exchangeSegment": "NSE", "scripCode": "2885",
+    "flavor": "REGULAR",           # REGULAR | BO | CO | GTT
+    "productType": "INTRADAY",
+    "triggerPrice": 2400,          # below LTP for a long, above for a short
+})
+
+target = high.portfolio.set_target({
+    "tradingSymbol": "RELIANCE-EQ",
+    "flavor": "REGULAR",
+    "productType": "INTRADAY",
+    "targetPrice": 2600,           # above LTP for a long, below for a short
+})
+print(stop.action, stop.orderId, stop.limitPrice)   # PLACED | MODIFIED
+```
+
+- `flavor` is the flavor the **exit order** is placed under. `BO`/`CO` amend
+  the position's own broker-owned leg and must match what
+  `portfolio.positions()` reports. `REGULAR` places a DAY stop that dies at
+  end of day; `GTT` carries forward, and is still placed against a `REGULAR`
+  position.
+- `orderId` in the request is optional, only needed to pick one exit order
+  when several match the position.
+- The result's `action` says whether an order was `PLACED` or `MODIFIED`;
+  `quantity` is what it actually covers after clamping to the live position.
+  For a stop-loss, `limitPrice` is the price it will be sent at once
+  triggered (one tick past the trigger).
+- The result's `orderId` is empty for `BO`/`CO`, whose modify endpoint
+  returns none.
+
+Confirm the symbol, side and price before calling — these place real orders.
 
 ## Exiting one position
 
