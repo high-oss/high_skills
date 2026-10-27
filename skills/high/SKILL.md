@@ -4,7 +4,8 @@ description: >
   Use when the user mentions HIGH, the HIGH Open API, high.live, or wants to
   trade on Indian exchanges (NSE, BSE) through HIGH. Triggers for: place,
   modify, or cancel equity or F&O orders on HIGH, including bracket, cover
-  and GTT orders; fetch holdings, positions, or funds; exit positions; get
+  and GTT orders; fetch holdings, positions, or funds; read account profile (demat/DP
+  details, linked bank accounts, enabled segments); exit positions; get
   live or historical market data; access option chains and expiries; check
   margin or order charges; resolve NSE/BSE trading symbols or scrip codes;
   stream the live HIGH datafeed; build any trading automation on HIGH. Also
@@ -187,6 +188,7 @@ print(verdict.preview)             # show this, then ask for confirmation
 | Positions | `high.portfolio.positions()` |
 | Holdings | `high.portfolio.holdings()` |
 | Funds | `high.portfolio.funds()` |
+| Account profile (masked PAN/Aadhaar/bank a/c) | `high.profile.get()` |
 | Convert position | `high.portfolio.convert_position(body)` |
 | Set a position stop-loss | `high.portfolio.set_stoploss(body)` |
 | Set a position target | `high.portfolio.set_target(body)` |
@@ -351,6 +353,7 @@ except HighApiError as error:
 | Option chain and expiries | [references/option-chain.md](references/option-chain.md) |
 | Instrument master and symbol resolution | [references/instruments.md](references/instruments.md) |
 | Funds, charges and margin | [references/funds.md](references/funds.md) |
+| Account profile, demat/DP, bank accounts, segments (MCP: `high_get_profile`) | [references/profile.md](references/profile.md) |
 | Live datafeed — quotes, depth, indices | [references/live-feed.md](references/live-feed.md) |
 | Errors, validator messages, rate limits, retries | [references/error-codes.md](references/error-codes.md) |
 | API keys, tokens, TOTP, consent, static IP | [references/auth-and-credentials.md](references/auth-and-credentials.md) |
@@ -367,5 +370,6 @@ Do not generate code for these — they belong to other brokers' APIs:
 - No numeric-only `security_id`. See the identifier table above.
 - No separate super-order or forever-order API. Flavors cover both.
 - No scanner / screener endpoint.
+- No endpoint that returns a full PAN, Aadhaar or bank account number — the profile is masked; never ask for or print the full values.
 - No ledger, eDIS or TPIN endpoints.
 - No order-update stream on the datafeed — quotes, depth and indices only.

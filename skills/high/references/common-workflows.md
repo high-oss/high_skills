@@ -75,6 +75,8 @@ Report in this order: funds available, open positions with unrealised P&L,
 fills today, orders still working, then holdings. Working orders matter most
 — an order the user forgot is live is the actionable item.
 
+Account checks ("is F&O enabled", "which bank is linked") use `high.profile.get()`; PAN, Aadhaar and account numbers come back masked, so never ask for or print full ones. See [profile.md](profile.md).
+
 Do not re-price everything from `quotes` to compute P&L. The broker's figures
 account for average cost and corporate actions.
 

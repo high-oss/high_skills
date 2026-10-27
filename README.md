@@ -71,6 +71,7 @@ skills/
     │   ├── option-chain.md               # Option chain and expiries
     │   ├── instruments.md                # Instrument master, the three identifier forms
     │   ├── funds.md                      # Funds, charges, basket margin
+    │   ├── profile.md                    # Account profile: demat/DP, bank accounts, segments (masked)
     │   ├── live-feed.md                  # WebSocket: quotes, depth, indices
     │   ├── error-codes.md                # Status codes, validator messages, retries
     │   ├── auth-and-credentials.md       # API key, access token, TOTP, consent, static IP
@@ -139,6 +140,7 @@ The skill activates when the user:
 - Needs **live or historical market data** (quotes, OHLC, depth, candles)
 - Wants to work with **option chains** or expiries
 - Asks about **margin or charges**
+- Asks about their **account profile**, demat/DP details, linked bank accounts or enabled segments
 - Needs to **resolve a symbol** to its trading symbol or scrip code
 - Wants to **stream the live datafeed**
 - Mentions **HIGH**, the **HIGH Open API**, or **high.live**
